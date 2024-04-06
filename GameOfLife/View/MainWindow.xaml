@@ -1,0 +1,121 @@
+﻿<Window x:Class="GameOfLife.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:GameOfLife.Converters"
+        xmlns:local="clr-namespace:GameOfLife"
+        xmlns:vm="clr-namespace:GameOfLife.ViewModels"
+        mc:Ignorable="d"
+        Title="Game Of Life" Height="512" Width="512" Background="#1A1A1D">
+    <Window.DataContext>
+        <vm:ViewModelMain/>
+    </Window.DataContext>
+    <Window.Resources>
+        <converters:BoolToVisibility x:Key="btv"/>
+        <converters:InverseBoolToVisibility x:Key="ibtv"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="90*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Image Grid.Column="0" Source="{Binding BitmapImage}" />
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0" Margin="5 5 5 10" Content="Случайно" Command="{Binding RandomDistribution}"/>
+                    <Button Grid.Row="1" Margin="5 0 5 5" Content="Очистить" Command="{Binding Clear}"/>
+                </Grid>
+            </Border>
+            <Border Grid.Row="1" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <CheckBox Grid.Row="0" Margin="5 5 0 5" IsChecked="{Binding Pause}" Content="Остановить" Style="{StaticResource CheckBox}"/>
+                    <Button Grid.Row="1" Margin="5 0 5 5" Content=" Следующий шаг " Visibility="{Binding Pause, Converter={StaticResource btv}}" Command="{Binding NextStep}"/>
+                    <TextBlock Grid.Row="2" Text="Задержка" Visibility="{Binding Pause, Converter={StaticResource ibtv}}" Style="{StaticResource TextBlock}"/>
+                    <TextBox Grid.Row="3" Margin="5 0 5 5" Text="{Binding Delay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Pause, Converter={StaticResource ibtv}}" Style="{StaticResource TextBox}"/>
+                </Grid>
+            </Border>
+            <Border Grid.Row="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Появляется" Style="{StaticResource TextBlock}"/>
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Grid.Row="0" Grid.Column="0" Margin="3 0 5 0" IsChecked="{Binding NewNeighbours.One}" Content="1" Style="{StaticResource CheckBox1}"/>
+                        <CheckBox Grid.Row="0" Grid.Column="1" Margin="0 0 5 0" FlowDirection="RightToLeft" IsChecked="{Binding NewNeighbours.Two}" Content="2" Style="{StaticResource CheckBox1}"/>
+                        <CheckBox Grid.Row="0" Grid.Column="2" Margin="0 0 5 0" FlowDirection="RightToLeft" IsChecked="{Binding NewNeighbours.Three}" Content="3" Style="{StaticResource CheckBox1}"/>
+                        <CheckBox Grid.Row="0" Grid.Column="3" Margin="0 0 3 0" FlowDirection="RightToLeft" IsChecked="{Binding NewNeighbours.Four}" Content="4" Style="{StaticResource CheckBox1}"/>
+                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="3 0 5 0" FlowDirection="RightToLeft" IsChecked="{Binding NewNeighbours.Five}" Content="5" Style="{StaticResource CheckBox1}"/>
+                        <CheckBox Grid.Row="1" Grid.Column="1" Margin="0 0 5 0" FlowDirection="RightToLeft" IsChecked="{Binding NewNeighbours.Six}" Content="6" Style="{StaticResource CheckBox1}"/>
+                        <CheckBox Grid.Row="1" Grid.Column="2" Margin="0 0 5 0" FlowDirection="RightToLeft" IsChecked="{Binding NewNeighbours.Seven}" Content="7" Style="{StaticResource CheckBox1}"/>
+                        <CheckBox Grid.Row="1" Grid.Column="3" Margin="0 0 3 0" FlowDirection="RightToLeft" IsChecked="{Binding NewNeighbours.Eight}" Content="8" Style="{StaticResource CheckBox1}"/>
+                    </Grid>
+                </Grid>
+            </Border>
+            <Border Grid.Row="3" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Выживает" Style="{StaticResource TextBlock}"/>
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Grid.Row="0" Grid.Column="0" Margin="3 0 5 0" FlowDirection="RightToLeft" IsChecked="{Binding OldNeighbours.One}" Content="1" Style="{StaticResource CheckBox1}"/>
+                        <CheckBox Grid.Row="0" Grid.Column="1" Margin="0 0 5 0" FlowDirection="RightToLeft" IsChecked="{Binding OldNeighbours.Two}" Content="2" Style="{StaticResource CheckBox1}"/>
+                        <CheckBox Grid.Row="0" Grid.Column="2" Margin="0 0 5 0" FlowDirection="RightToLeft" IsChecked="{Binding OldNeighbours.Three}" Content="3" Style="{StaticResource CheckBox1}"/>
+                        <CheckBox Grid.Row="0" Grid.Column="3" Margin="0 0 3 0" FlowDirection="RightToLeft" IsChecked="{Binding OldNeighbours.Four}" Content="4" Style="{StaticResource CheckBox1}"/>
+                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="3 0 5 0" FlowDirection="RightToLeft" IsChecked="{Binding OldNeighbours.Five}" Content="5" Style="{StaticResource CheckBox1}"/>
+                        <CheckBox Grid.Row="1" Grid.Column="1" Margin="0 0 5 0" FlowDirection="RightToLeft" IsChecked="{Binding OldNeighbours.Six}" Content="6" Style="{StaticResource CheckBox1}"/>
+                        <CheckBox Grid.Row="1" Grid.Column="2" Margin="0 0 5 0" FlowDirection="RightToLeft" IsChecked="{Binding OldNeighbours.Seven}" Content="7" Style="{StaticResource CheckBox1}"/>
+                        <CheckBox Grid.Row="1" Grid.Column="3" Margin="0 0 3 0" FlowDirection="RightToLeft" IsChecked="{Binding OldNeighbours.Eight}" Content="8" Style="{StaticResource CheckBox1}"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
